@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a7a4a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GanaderíaPro">
+<title>GanaderíaPro</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root {
+  --verde:#1a7a4a; --verde-claro:#e8f5ee; --verde-medio:#2d9e62;
+  --cafe:#7a4a1a; --cafe-claro:#f5ede8;
+  --amarillo:#c49a2a; --amarillo-claro:#fdf6e3;
+  --rojo:#c0392b; --rojo-claro:#fdecea;
+  --azul:#1a4a7a; --azul-claro:#e8f0f5;
+  --gris:#6b7280; --gris-claro:#f4f6f8;
+  --blanco:#fff; --borde:#e2e8f0; --texto:#1e293b; --texto-muted:#64748b;
+  --radio:12px; --radio-sm:8px;
+  --nav-h:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Sora',sans-serif;background:#f0f4f2;color:var(--texto);display:flex;flex-direction:column;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--verde);color:#fff;padding:env(safe-area-inset-top,0) 16px 0;min-height:56px;display:flex;align-items:flex-end;padding-bottom:10px;position:relative;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;width:100%;}
+.app-logo{font-size:17px;font-weight:700;letter-spacing:-.3px;}
+.app-logo span{color:#7de8a8;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.icon-btn{background:rgba(255,255,255,0.15);border:none;border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:18px;}
+
+/* ── CONTENT ── */
+.content-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0));}
+.page{display:none;padding:16px;}
+.page.active{display:block;}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--borde);height:var(--nav-h);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom,0);z-index:20;box-shadow:0 -2px 12px rgba(0,0,0,0.08);}
+.nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:none;font-family:'Sora',sans-serif;color:var(--gris);font-size:10px;font-weight:500;transition:color .15s;}
+.nav-tab i{font-size:22px;}
+.nav-tab.active{color:var(--verde);}
+.nav-tab.active i{font-size:24px;}
+
+/* ── CARDS / STATS ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.stat-card{background:#fff;border-radius:var(--radio);padding:14px;border:1px solid var(--borde);}
+.stat-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:8px;}
+.stat-icon.verde{background:var(--verde-claro);color:var(--verde);}
+.stat-icon.cafe{background:var(--cafe-claro);color:var(--cafe);}
+.stat-icon.amarillo{background:var(--amarillo-claro);color:var(--amarillo);}
+.stat-icon.rojo{background:var(--rojo-claro);color:var(--rojo);}
+.stat-val{font-size:24px;font-weight:700;line-height:1;}
+.stat-label{font-size:11px;color:var(--texto-muted);margin-top:3px;}
+.card{background:#fff;border-radius:var(--radio);border:1px solid var(--borde);margin-bottom:14px;}
+.card-header{padding:14px 16px;border-bottom:1px solid var(--borde);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:14px;font-weight:600;}
+.card-body{padding:16px;}
+
+/* ── BUTTONS ── */
+.btn{padding:10px 18px;border-radius:var(--radio-sm);border:none;cursor:pointer;font-family:'Sora',sans-serif;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.btn-primary{background:var(--verde);color:#fff;}
+.btn-outline{background:#fff;color:var(--verde);border:1.5px solid var(--verde);}
+.btn-danger{background:var(--rojo);color:#fff;}
+.btn-full{width:100%;justify-content:center;margin-bottom:10px;}
+.btn-sm{padding:6px 12px;font-size:12px;}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-verde{background:var(--verde-claro);color:var(--verde);}
+.badge-rojo{background:var(--rojo-claro);color:var(--rojo);}
+.badge-amarillo{background:var(--amarillo-claro);color:var(--amarillo);}
+.badge-cafe{background:var(--cafe-claro);color:var(--cafe);}
+.badge-azul{background:var(--azul-claro);color:var(--azul);}
+
+/* ── LISTA ANIMALES (mobile-first) ── */
+.animal-list{display:flex;flex-direction:column;gap:10px;}
+.animal-row{background:#fff;border-radius:var(--radio);border:1px solid var(--borde);padding:14px;display:flex;align-items:center;gap:12px;}
+.animal-avatar{width:44px;height:44px;border-radius:10px;background:var(--verde-claro);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.animal-info{flex:1;min-width:0;}
+.animal-name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.animal-meta{font-size:11px;color:var(--texto-muted);margin-top:2px;}
+.animal-actions{display:flex;gap:6px;flex-shrink:0;}
+
+/* ── FORM ── */
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--texto-muted);margin-bottom:5px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 13px;border:1.5px solid var(--borde);border-radius:var(--radio-sm);font-family:'Sora',sans-serif;font-size:14px;color:var(--texto);background:#fff;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--verde);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.search-bar{display:flex;align-items:center;gap:8px;background:var(--gris-claro);border-radius:var(--radio-sm);padding:10px 14px;margin-bottom:14px;}
+.search-bar input{background:none;border:none;outline:none;font-family:'Sora',sans-serif;font-size:14px;width:100%;}
+
+/* ── MODAL (sheet desde abajo en móvil) ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,12px);}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--borde);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;}
+.modal-drag{width:40px;height:4px;background:var(--borde);border-radius:2px;margin:10px auto 0;}
+.modal-title{font-size:15px;font-weight:700;}
+.modal-close{background:none;border:none;font-size:22px;color:var(--gris);cursor:pointer;}
+.modal-body{padding:20px;}
+.modal-footer{padding:12px 20px;border-top:1px solid var(--borde);display:flex;gap:10px;}
+.modal-footer .btn{flex:1;justify-content:center;}
+
+/* ── ALERT ITEMS ── */
+.alert-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--borde);}
+.alert-item:last-child{border-bottom:none;}
+.alert-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.alert-dot.rojo{background:var(--rojo);}
+.alert-dot.amarillo{background:var(--amarillo);}
+.alert-dot.verde{background:var(--verde-medio);}
+.alert-name{font-size:13px;font-weight:600;}
+.alert-desc{font-size:11px;color:var(--texto-muted);margin-top:1px;}
+
+/* ── POTREROS ── */
+.potrero-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.potrero-card{border-radius:var(--radio);border:2px solid var(--borde);padding:14px;}
+.potrero-card.activo{border-color:var(--verde);background:var(--verde-claro);}
+.potrero-card.descanso{border-color:var(--amarillo);background:var(--amarillo-claro);}
+.potrero-card.agotado{border-color:var(--rojo);background:var(--rojo-claro);}
+.barra{background:rgba(0,0,0,.1);border-radius:10px;height:7px;margin:8px 0;}
+.barra-fill{height:7px;border-radius:10px;}
+.barra-fill.verde{background:var(--verde-medio);}
+.barra-fill.amarillo{background:var(--amarillo);}
+.barra-fill.rojo{background:var(--rojo);}
+
+/* ── FINANZAS ── */
+.fin-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borde);}
+.fin-row:last-child{border-bottom:none;}
+.fin-val.verde{color:var(--verde);font-weight:700;}
+.fin-val.rojo{color:var(--rojo);font-weight:700;}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--borde);margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab-btn{padding:9px 14px;background:none;border:none;cursor:pointer;font-family:'Sora',sans-serif;font-size:13px;font-weight:500;color:var(--texto-muted);border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+.tab-btn.active{color:var(--verde);border-bottom-color:var(--verde);font-weight:700;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:calc(var(--nav-h) + 16px + env(safe-area-inset-bottom,0));left:50%;transform:translateX(-50%) translateY(20px);background:#1e293b;color:#fff;padding:12px 20px;border-radius:var(--radio);font-size:13px;font-weight:500;z-index:200;opacity:0;transition:all .3s;white-space:nowrap;display:flex;align-items:center;gap:8px;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.verde{background:var(--verde);}
+.toast.rojo{background:var(--rojo);}
+.toast.amarillo{background:var(--amarillo);}
+
+/* ── INSTALL BANNER ── */
+.install-banner{background:var(--verde-claro);border:1.5px solid var(--verde);border-radius:var(--radio);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.install-banner-text{flex:1;font-size:13px;}
+.install-banner strong{display:block;font-size:14px;color:var(--verde);}
+
+/* ── LOADING ── */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;gap:12px;color:var(--texto-muted);}
+.spinner{width:36px;height:36px;border:3px solid var(--verde-claro);border-top-color:var(--verde);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── SECCIÓN HEADER ── */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.section-title{font-size:16px;font-weight:700;}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:40px 20px;color:var(--texto-muted);}
+.empty i{font-size:48px;margin-bottom:12px;display:block;}
+.empty p{font-size:14px;}
+
+/* ── CHART SIMPLE ── */
+.mini-chart{display:flex;align-items:flex-end;gap:6px;height:80px;padding:0 2px;}
+.mc-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.mc-bar{width:100%;background:var(--verde-claro);border-radius:4px 4px 0 0;min-height:4px;}
+.mc-label{font-size:9px;color:var(--texto-muted);}
+.mc-val{font-size:9px;font-weight:600;color:var(--verde);}
+
+@media(min-width:600px){
+  .stats-grid{grid-template-columns:repeat(4,1fr);}
+  .potrero-grid{grid-template-columns:repeat(3,1fr);}
+  .form-row{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="app-logo">🐄 Ganadería<span>Pro</span></div>
+    <div class="topbar-right">
+      <button class="icon-btn" onclick="showPage('config')" title="Configuración"><i class="ti ti-settings"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-area" id="content-area">
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div id="install-banner-wrap"></div>
+    <div class="stats-grid" id="dash-stats"></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">⚠️ Alertas Activas</span><span class="badge badge-rojo" id="dash-alert-count">0</span></div>
+      <div class="card-body" id="dash-alertas"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📊 Peso Promedio (kg)</span></div>
+      <div class="card-body">
+        <div class="mini-chart" id="dash-chart"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">💰 Balance del Mes</span></div>
+      <div class="card-body" id="dash-balance"></div>
+    </div>
+  </div>
+
+  <!-- INVENTARIO -->
+  <div class="page" id="page-inventario">
+    <div class="section-header">
+      <span class="section-title">Inventario Animal</span>
+      <button class="btn btn-primary btn-sm" onclick="abrirFormAnimal()"><i class="ti ti-plus"></i> Agregar</button>
+    </div>
+    <div class="search-bar"><i class="ti ti-search" style="color:var(--gris)"></i><input type="text" placeholder="Buscar por arete o nombre..." id="search-input" oninput="renderInventario()"></div>
+    <div class="tabs" id="inv-tabs">
+      <button class="tab-btn active" onclick="setRaza('todos',this)">Todos</button>
+      <button class="tab-btn" onclick="setRaza('Cebú',this)">Cebú</button>
+      <button class="tab-btn" onclick="setRaza('Holstein',this)">Holstein</button>
+      <button class="tab-btn" onclick="setRaza('Brahman',this)">Brahman</button>
+      <button class="tab-btn" onclick="setRaza('Simmental',this)">Simmental</button>
+    </div>
+    <div class="animal-list" id="animal-list"></div>
+  </div>
+
+  <!-- PESOS -->
+  <div class="page" id="page-pesos">
+    <div class="section-header"><span class="section-title">Control de Pesos</span></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📏 Registrar Pesada</span></div>
+      <div class="card-body">
+        <div class="form-group"><label>Animal</label><select id="peso-animal"></select></div>
+        <div class="form-row">
+          <div class="form-group"><label>Peso (kg)</label><input type="number" id="peso-kg" placeholder="380" inputmode="decimal"></div>
+          <div class="form-group"><label>Fecha</label><input type="date" id="peso-fecha"></div>
+        </div>
+        <div class="form-group"><label>Observaciones</label><input type="text" id="peso-obs" placeholder="Opcional"></div>
+        <button class="btn btn-primary btn-full" onclick="registrarPeso()"><i class="ti ti-device-floppy"></i> Registrar Peso</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Historial de Pesadas</span></div>
+      <div class="card-body" style="padding:0;">
+        <div id="pesos-list" style="padding:0 16px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALUD -->
+  <div class="page" id="page-salud">
+    <div class="section-header"><span class="section-title">Salud & Vacunas</span></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">💉 Registrar Evento</span></div>
+      <div class="card-body">
+        <div class="form-group"><label>Animal</label><select id="salud-animal"></select></div>
+        <div class="form-row">
+          <div class="form-group"><label>Tipo</label>
+            <select id="salud-tipo"><option>Vacunación</option><option>Desparasitación</option><option>Tratamiento</option><option>Revisión</option></select>
+          </div>
+          <div class="form-group"><label>Fecha</label><input type="date" id="salud-fecha"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Producto</label><input type="text" id="salud-producto" placeholder="ej: Ivermectina"></div>
+          <div class="form-group"><label>Dosis</label><input type="text" id="salud-dosis" placeholder="ej: 5ml"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Próxima dosis</label><input type="date" id="salud-proxima"></div>
+          <div class="form-group"><label>Veterinario</label><input type="text" id="salud-vet" placeholder="Dr. García"></div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="registrarSalud()"><i class="ti ti-device-floppy"></i> Registrar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📅 Próximas Aplicaciones</span></div>
+      <div class="card-body" id="proximas-apps"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Historial Sanitario</span></div>
+      <div class="card-body" style="padding:0;"><div id="salud-list" style="padding:0 16px;"></div></div>
+    </div>
+  </div>
+
+  <!-- PASTOS -->
+  <div class="page" id="page-pastos">
+    <div class="section-header">
+      <span class="section-title">Gestión de Pastos</span>
+      <button class="btn btn-primary btn-sm" onclick="openModal('potrero')"><i class="ti ti-plus"></i> Nuevo</button>
+    </div>
+    <div class="potrero-grid" id="potrero-grid"></div>
+    <div class="card" style="margin-top:14px;">
+      <div class="card-header"><span class="card-title">🔄 Rotación</span></div>
+      <div class="card-body" style="padding:0;"><div id="rotacion-list" style="padding:0 16px;"></div></div>
+    </div>
+  </div>
+
+  <!-- FINANZAS -->
+  <div class="page" id="page-finanzas">
+    <div class="section-header"><span class="section-title">Finanzas</span></div>
+    <div class="stats-grid" id="fin-stats"></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">+ Registrar Movimiento</span></div>
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group"><label>Tipo</label>
+            <select id="fin-tipo"><option value="ingreso">Ingreso</option><option value="egreso">Egreso</option></select>
+          </div>
+          <div class="form-group"><label>Fecha</label><input type="date" id="fin-fecha"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Categoría</label>
+            <select id="fin-cat">
+              <option>Venta de ganado</option><option>Venta de leche</option><option>Compra de ganado</option>
+              <option>Alimentación</option><option>Veterinaria</option><option>Mano de obra</option>
+              <option>Insumos</option><option>Maquinaria</option><option>Otros</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Valor ($)</label><input type="number" id="fin-valor" placeholder="0" inputmode="decimal"></div>
+        </div>
+        <div class="form-group"><label>Descripción</label><input type="text" id="fin-desc" placeholder="Detalle"></div>
+        <button class="btn btn-primary btn-full" onclick="registrarFinanza()"><i class="ti ti-device-floppy"></i> Registrar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Movimientos</span>
+        <button class="btn btn-outline btn-sm" onclick="exportarCSV()"><i class="ti ti-download"></i> CSV</button>
+      </div>
+      <div class="card-body" style="padding:0;"><div id="fin-list" style="padding:0 16px;"></div></div>
+    </div>
+  </div>
+
+  <!-- CONFIG -->
+  <div class="page" id="page-config">
+    <div class="section-header"><span class="section-title">Configuración</span></div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">🏡 Datos de la Finca</span></div>
+      <div class="card-body">
+        <div class="form-group"><label>Nombre de la Finca</label><input type="text" id="cfg-finca" placeholder="Mi Finca"></div>
+        <div class="form-group"><label>Propietario</label><input type="text" id="cfg-propietario" placeholder="Nombre completo"></div>
+        <div class="form-group"><label>Municipio</label><input type="text" id="cfg-municipio" placeholder="Ciudad, Departamento"></div>
+        <div class="form-group"><label>Hectáreas totales</label><input type="number" id="cfg-hectareas" inputmode="decimal"></div>
+        <button class="btn btn-primary btn-full" onclick="guardarConfig()"><i class="ti ti-device-floppy"></i> Guardar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">⚙️ Parámetros</span></div>
+      <div class="card-body">
+        <div class="form-group"><label>Peso mínimo alerta (kg)</label><input type="number" id="cfg-peso-min" value="280" inputmode="decimal"></div>
+        <div class="form-group"><label>Días alerta vacuna</label><input type="number" id="cfg-dias-vac" value="7"></div>
+        <div class="form-group"><label>Días rotación recomendados</label><input type="number" id="cfg-dias-rot" value="28"></div>
+        <button class="btn btn-primary btn-full" onclick="guardarConfig()"><i class="ti ti-device-floppy"></i> Guardar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">💾 Respaldo de Datos</span></div>
+      <div class="card-body">
+        <button class="btn btn-outline btn-full" onclick="exportarBackup()"><i class="ti ti-download"></i> Exportar backup (JSON)</button>
+        <label class="btn btn-outline btn-full" style="cursor:pointer;margin-top:0;">
+          <i class="ti ti-upload"></i> Importar backup
+          <input type="file" accept=".json" onchange="importarBackup(event)" style="display:none">
+        </label>
+        <p style="font-size:11px;color:var(--texto-muted);margin-top:8px;text-align:center;">Guarda tu backup regularmente para no perder datos</p>
+      </div>
+    </div>
+    <div style="text-align:center;padding:16px;font-size:11px;color:var(--texto-muted);">GanaderíaPro v2.0 · Datos guardados localmente en tu dispositivo</div>
+  </div>
+
+</div><!-- content-area -->
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-tab active" data-page="dashboard" onclick="showPage('dashboard',this)">
+    <i class="ti ti-dashboard"></i>Inicio
+  </button>
+  <button class="nav-tab" data-page="inventario" onclick="showPage('inventario',this)">
+    <i class="ti ti-list-details"></i>Animales
+  </button>
+  <button class="nav-tab" data-page="pesos" onclick="showPage('pesos',this)">
+    <i class="ti ti-weight"></i>Pesos
+  </button>
+  <button class="nav-tab" data-page="salud" onclick="showPage('salud',this)">
+    <i class="ti ti-heart-rate-monitor"></i>Salud
+  </button>
+  <button class="nav-tab" data-page="pastos" onclick="showPage('pastos',this)">
+    <i class="ti ti-trees"></i>Pastos
+  </button>
+  <button class="nav-tab" data-page="finanzas" onclick="showPage('finanzas',this)">
+    <i class="ti ti-coin"></i>Finanzas
+  </button>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="ti ti-check"></i><span id="toast-msg">OK</span></div>
+
+<!-- MODAL ANIMAL -->
+<div class="modal-overlay" id="modal-animal">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-header">
+      <span class="modal-title" id="modal-animal-title">Registrar Animal</span>
+      <button class="modal-close" onclick="closeModal('animal')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-id">
+      <div class="form-row">
+        <div class="form-group"><label>N° Arete *</label><input type="text" id="add-arete" placeholder="A-1042"></div>
+        <div class="form-group"><label>Nombre</label><input type="text" id="add-nombre" placeholder="Paloma"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Raza</label>
+          <select id="add-raza"><option>Cebú</option><option>Holstein</option><option>Simmental</option><option>Brahman</option><option>Criolla</option><option>Angus</option><option>Mestiza</option></select>
+        </div>
+        <div class="form-group"><label>Sexo</label>
+          <select id="add-sexo"><option>Hembra</option><option>Macho</option><option>Macho castrado</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Nacimiento</label><input type="date" id="add-nacimiento"></div>
+        <div class="form-group"><label>Peso actual (kg)</label><input type="number" id="add-peso" placeholder="380" inputmode="decimal"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Potrero</label><select id="add-potrero"></select></div>
+        <div class="form-group"><label>Estado</label>
+          <select id="add-estado"><option>Activo</option><option>Enfermo</option><option>Gestante</option><option>Seco</option><option>Vendido</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Propósito</label>
+          <select id="add-proposito"><option>Carne</option><option>Leche</option><option>Doble propósito</option><option>Cría</option></select>
+        </div>
+        <div class="form-group"><label>Madre (arete)</label><input type="text" id="add-madre" placeholder="Opcional"></div>
+      </div>
+      <div class="form-group"><label>Observaciones</label>
+        <textarea id="add-obs" rows="2" placeholder="Notas adicionales..." style="resize:none;"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('animal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarAnimal()"><i class="ti ti-device-floppy"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL POTRERO -->
+<div class="modal-overlay" id="modal-potrero">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-header"><span class="modal-title">Nuevo Potrero</span><button class="modal-close" onclick="closeModal('potrero')"><i class="ti ti-x"></i></button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Nombre *</label><input type="text" id="pot-nombre" placeholder="Potrero Norte"></div>
+        <div class="form-group"><label>Hectáreas</label><input type="number" id="pot-ha" placeholder="8.5" inputmode="decimal"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Forraje</label><input type="text" id="pot-forraje" placeholder="Brachiaria"></div>
+        <div class="form-group"><label>Capacidad</label><input type="number" id="pot-cap" placeholder="20"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Estado</label>
+          <select id="pot-estado"><option value="activo">En uso</option><option value="descanso">Descanso</option><option value="agotado">Agotado</option></select>
+        </div>
+        <div class="form-group"><label>% Pasto disponible</label><input type="number" id="pot-pasto" placeholder="75" min="0" max="100" inputmode="decimal"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('potrero')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarPotrero()"><i class="ti ti-device-floppy"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+//  INDEXEDDB — Almacenamiento persistente
+// ═══════════════════════════════════════════
+const DB_NAME='GanaderiaProDB', DB_VER=1;
+let db;
+
+function initDB(){
+  return new Promise((res,rej)=>{
+    const req=indexedDB.open(DB_NAME,DB_VER);
+    req.onupgradeneeded=e=>{
+      const d=e.target.result;
+      ['animales','pesadas','eventos','potreros','finanzas','config'].forEach(store=>{
+        if(!d.objectStoreNames.contains(store)){
+          d.createObjectStore(store,{keyPath:'id',autoIncrement:true});
+        }
+      });
+    };
+    req.onsuccess=e=>{db=e.target.result;res(db);};
+    req.onerror=e=>rej(e);
+  });
+}
+
+function dbGetAll(store){
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readonly');
+    const req=tx.objectStore(store).getAll();
+    req.onsuccess=()=>res(req.result);
+    req.onerror=rej;
+  });
+}
+
+function dbPut(store,obj){
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readwrite');
+    const req=tx.objectStore(store).put(obj);
+    req.onsuccess=()=>res(req.result);
+    req.onerror=rej;
+  });
+}
+
+function dbDelete(store,id){
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readwrite');
+    const req=tx.objectStore(store).delete(id);
+    req.onsuccess=()=>res();
+    req.onerror=rej;
+  });
+}
+
+function dbClear(store){
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readwrite');
+    tx.objectStore(store).clear().onsuccess=res;
+  });
+}
+
+// ═══════════════════════════════════════════
+//  ESTADO EN MEMORIA (sincronizado con DB)
+// ═══════════════════════════════════════════
+let animales=[], pesadas=[], eventos=[], potreros=[], finanzas=[], config={};
+let filtroRaza='todos';
+let installPrompt=null;
+
+async function cargarDatos(){
+  [animales,pesadas,eventos,potreros,finanzas]=await Promise.all([
+    dbGetAll('animales'),dbGetAll('pesadas'),dbGetAll('eventos'),dbGetAll('potreros'),dbGetAll('finanzas')
+  ]);
+  const cfgArr=await dbGetAll('config');
+  config=cfgArr[0]||{id:1,finca:'Mi Finca',propietario:'',municipio:'',hectareas:'',pesoMin:280,diasVac:7,diasRot:28};
+  // Si DB vacía, cargar datos de muestra
+  if(animales.length===0) await cargarDatosMuestra();
+}
+
+async function cargarDatosMuestra(){
+  const hoy=new Date().toISOString().split('T')[0];
+  const muestra_potreros=[
+    {nombre:'Potrero Norte',ha:10,forraje:'Brachiaria decumbens',cap:30,estado:'activo',pasto:70,entrada:hoy},
+    {nombre:'Potrero Sur',ha:8,forraje:'Maralfalfa',cap:25,estado:'activo',pasto:55,entrada:hoy},
+    {nombre:'Potrero Centro',ha:12,forraje:'Guinea',cap:35,estado:'descanso',pasto:85,entrada:'2025-04-10'},
+    {nombre:'Potrero Este',ha:6,forraje:'Estrella africana',cap:18,estado:'agotado',pasto:20,entrada:'2025-04-01'},
+  ];
+  for(const p of muestra_potreros){ const r=await dbPut('potreros',p); p.id=r; }
+  potreros=await dbGetAll('potreros');
+
+  const muestra_animales=[
+    {arete:'A-1001',nombre:'Paloma',raza:'Holstein',sexo:'Hembra',nacimiento:'2020-03-15',peso:420,potrero:'Potrero Norte',estado:'Activo',proposito:'Leche',madre:'',obs:'Buena productora'},
+    {arete:'A-1002',nombre:'Toro Zeus',raza:'Brahman',sexo:'Macho',nacimiento:'2019-07-20',peso:680,potrero:'Potrero Sur',estado:'Activo',proposito:'Carne',madre:'',obs:'Reproductor'},
+    {arete:'A-1003',nombre:'Linda',raza:'Cebú',sexo:'Hembra',nacimiento:'2021-01-10',peso:310,potrero:'Potrero Centro',estado:'Gestante',proposito:'Doble propósito',madre:'A-0850',obs:'Primer parto'},
+    {arete:'A-1004',nombre:'Manchada',raza:'Simmental',sexo:'Hembra',nacimiento:'2020-08-22',peso:390,potrero:'Potrero Norte',estado:'Activo',proposito:'Carne',madre:'',obs:''},
+    {arete:'A-1005',nombre:'Pinto',raza:'Mestiza',sexo:'Macho castrado',nacimiento:'2022-02-01',peso:255,potrero:'Potrero Sur',estado:'Enfermo',proposito:'Carne',madre:'',obs:'Tratamiento en curso'},
+  ];
+  for(const a of muestra_animales){ const r=await dbPut('animales',a); a.id=r; }
+  animales=await dbGetAll('animales');
+  await dbPut('config',config);
+}
+
+// ═══════════════════════════════════════════
+//  NAVEGACIÓN
+// ═══════════════════════════════════════════
+function showPage(page, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  if(btn) btn.classList.add('active');
+  else { const t=document.querySelector(`[data-page="${page}"]`); if(t) t.classList.add('active'); }
+  document.getElementById('content-area').scrollTop=0;
+  const renders={dashboard:renderDashboard,inventario:renderInventario,pesos:renderPesos,salud:renderSalud,pastos:renderPastos,finanzas:renderFinanzas,config:renderConfig};
+  if(renders[page]) renders[page]();
+}
+
+// ═══════════════════════════════════════════
+//  UTILIDADES
+// ═══════════════════════════════════════════
+function calcEdad(nac){
+  const hoy=new Date(),n=new Date(nac);
+  let m=(hoy.getFullYear()-n.getFullYear())*12+(hoy.getMonth()-n.getMonth());
+  return m<12?m+'m':Math.floor(m/12)+'a';
+}
+function getAnimal(id){return animales.find(a=>a.id===id);}
+function fmt(n){return Number(n).toLocaleString('es-CO');}
+function hoy(){return new Date().toISOString().split('T')[0];}
+function openModal(id){document.getElementById('modal-'+id).classList.add('open');}
+function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
+function toast(msg,tipo='verde'){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.className='toast '+tipo+' show';
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ═══════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════
+function renderDashboard(){
+  const total=animales.length;
+  const activos=animales.filter(a=>a.estado==='Activo').length;
+  const enfermos=animales.filter(a=>a.estado==='Enfermo').length;
+  const pesoPromedio=total?Math.round(animales.reduce((s,a)=>s+(a.peso||0),0)/total):0;
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-icon verde"><i class="ti ti-horse"></i></div><div class="stat-val">${total}</div><div class="stat-label">Total Animales</div></div>
+    <div class="stat-card"><div class="stat-icon verde"><i class="ti ti-check"></i></div><div class="stat-val">${activos}</div><div class="stat-label">Sanos / Activos</div></div>
+    <div class="stat-card"><div class="stat-icon rojo"><i class="ti ti-heart-broken"></i></div><div class="stat-val">${enfermos}</div><div class="stat-label">En Tratamiento</div></div>
+    <div class="stat-card"><div class="stat-icon cafe"><i class="ti ti-weight"></i></div><div class="stat-val">${pesoPromedio}<small style="font-size:12px">kg</small></div><div class="stat-label">Peso Prom.</div></div>
+  `;
+  // Alertas
+  const ahora=new Date();
+  const alertas=[];
+  animales.filter(a=>a.estado==='Enfermo').forEach(a=>alertas.push({dot:'rojo',name:a.arete+' '+a.nombre,desc:'En tratamiento médico'}));
+  animales.filter(a=>(a.peso||0)<(config.pesoMin||280)).forEach(a=>alertas.push({dot:'amarillo',name:a.arete+' '+a.nombre,desc:'Bajo peso: '+a.peso+'kg'}));
+  eventos.forEach(e=>{
+    if(e.proxima){const d=new Date(e.proxima),diff=(d-ahora)/86400000;
+    if(diff>=0&&diff<=(config.diasVac||7)){const an=getAnimal(e.animalId);alertas.push({dot:'amarillo',name:an?an.nombre+' '+an.arete:'-',desc:e.tipo+' vence en '+Math.round(diff)+'d'});}}
+  });
+  document.getElementById('dash-alert-count').textContent=alertas.length;
+  document.getElementById('dash-alertas').innerHTML=alertas.length
+    ?alertas.map(a=>`<div class="alert-item"><div class="alert-dot ${a.dot}"></div><div><div class="alert-name">${a.name}</div><div class="alert-desc">${a.desc}</div></div></div>`).join('')
+    :'<div class="empty" style="padding:20px 0;"><p>✅ Sin alertas activas</p></div>';
+  // Mini chart pesos (mock semanas)
+  const maxP=pesoPromedio*1.1||500;
+  const datos=[{l:'S1',v:pesoPromedio-15},{l:'S2',v:pesoPromedio-9},{l:'S3',v:pesoPromedio-4},{l:'S4',v:pesoPromedio-2},{l:'Hoy',v:pesoPromedio}];
+  document.getElementById('dash-chart').innerHTML=datos.map(d=>`
+    <div class="mc-col">
+      <div class="mc-val">${d.v}</div>
+      <div class="mc-bar" style="height:${Math.round((d.v/maxP)*60)}px;background:var(--verde-${d.l==='Hoy'?'medio':'claro'})"></div>
+      <div class="mc-label">${d.l}</div>
+    </div>`).join('');
+  // Balance mes actual
+  const mesActual=new Date().toISOString().substring(0,7);
+  const ingMes=finanzas.filter(f=>f.tipo==='ingreso'&&(f.fecha||'').startsWith(mesActual)).reduce((s,f)=>s+f.valor,0);
+  const egMes=finanzas.filter(f=>f.tipo==='egreso'&&(f.fecha||'').startsWith(mesActual)).reduce((s,f)=>s+f.valor,0);
+  document.getElementById('dash-balance').innerHTML=`
+    <div class="fin-row"><span>Ingresos del mes</span><span class="fin-val verde">+$${fmt(ingMes)}</span></div>
+    <div class="fin-row"><span>Egresos del mes</span><span class="fin-val rojo">-$${fmt(egMes)}</span></div>
+    <div class="fin-row"><span style="font-weight:700">Utilidad neta</span><span class="fin-val ${ingMes-egMes>=0?'verde':'rojo'}" style="font-size:16px">$${fmt(ingMes-egMes)}</span></div>
+  `;
+  // Install banner
+  const wrap=document.getElementById('install-banner-wrap');
+  if(installPrompt){
+    wrap.innerHTML=`<div class="install-banner"><span style="font-size:28px">📱</span><div class="install-banner-text"><strong>Instalar como App</strong>Agrega GanaderíaPro a tu pantalla de inicio para usarla sin internet</div><button class="btn btn-primary btn-sm" onclick="instalarApp()">Instalar</button></div>`;
+  } else { wrap.innerHTML=''; }
+}
+
+// ═══════════════════════════════════════════
+//  INVENTARIO
+// ═══════════════════════════════════════════
+function setRaza(r,btn){
+  filtroRaza=r;
+  document.querySelectorAll('#inv-tabs .tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderInventario();
+}
+
+function renderInventario(){
+  const q=(document.getElementById('search-input')?.value||'').toLowerCase();
+  let data=animales.filter(a=>{
+    const razaOk=filtroRaza==='todos'||a.raza===filtroRaza;
+    const queryOk=!q||(a.arete||'').toLowerCase().includes(q)||(a.nombre||'').toLowerCase().includes(q);
+    return razaOk&&queryOk;
+  });
+  const emojis={Hembra:'🐄',Macho:'🐂','Macho castrado':'🐃'};
+  const estadoColor={Activo:'verde',Enfermo:'rojo',Gestante:'amarillo',Seco:'cafe',Vendido:'azul'};
+  document.getElementById('animal-list').innerHTML=data.length
+    ?data.map(a=>`
+      <div class="animal-row">
+        <div class="animal-avatar">${emojis[a.sexo]||'🐄'}</div>
+        <div class="animal-info">
+          <div class="animal-name">${a.nombre||'Sin nombre'} <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--texto-muted)">${a.arete}</span></div>
+          <div class="animal-meta">${a.raza} · ${calcEdad(a.nacimiento||'2020-01-01')} · <strong>${a.peso||0}kg</strong> · ${a.potrero||'—'}</div>
+          <div style="margin-top:4px"><span class="badge badge-${estadoColor[a.estado]||'gris'}">${a.estado}</span></div>
+        </div>
+        <div class="animal-actions">
+          <button class="btn btn-outline btn-sm" onclick="editAnimal(${a.id})"><i class="ti ti-edit"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarAnimal(${a.id})"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>`).join('')
+    :`<div class="empty"><i class="ti ti-horse"></i><p>No hay animales registrados</p><button class="btn btn-primary" style="margin-top:12px" onclick="abrirFormAnimal()">Agregar primer animal</button></div>`;
+}
+
+function abrirFormAnimal(){
+  document.getElementById('edit-id').value='';
+  ['add-arete','add-nombre','add-peso','add-madre','add-obs'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('add-nacimiento').value='';
+  populatePotreroSelect('add-potrero');
+  document.getElementById('modal-animal-title').textContent='Registrar Animal';
+  openModal('animal');
+}
+
+async function guardarAnimal(){
+  const arete=document.getElementById('add-arete').value.trim();
+  if(!arete){toast('El número de arete es obligatorio','amarillo');return;}
+  const id=document.getElementById('edit-id').value;
+  const obj={
+    arete,
+    nombre:document.getElementById('add-nombre').value||'Sin nombre',
+    raza:document.getElementById('add-raza').value,
+    sexo:document.getElementById('add-sexo').value,
+    nacimiento:document.getElementById('add-nacimiento').value||hoy(),
+    peso:parseFloat(document.getElementById('add-peso').value)||0,
+    potrero:document.getElementById('add-potrero').value,
+    estado:document.getElementById('add-estado').value,
+    proposito:document.getElementById('add-proposito').value,
+    madre:document.getElementById('add-madre').value,
+    obs:document.getElementById('add-obs').value,
+  };
+  if(id) obj.id=parseInt(id);
+  await dbPut('animales',obj);
+  animales=await dbGetAll('animales');
+  closeModal('animal');
+  renderInventario();
+  toast(id?'Animal actualizado':'Animal registrado ✓');
+}
+
+function editAnimal(id){
+  const a=getAnimal(id);if(!a)return;
+  document.getElementById('edit-id').value=a.id;
+  document.getElementById('add-arete').value=a.arete||'';
+  document.getElementById('add-nombre').value=a.nombre||'';
+  document.getElementById('add-raza').value=a.raza||'Cebú';
+  document.getElementById('add-sexo').value=a.sexo||'Hembra';
+  document.getElementById('add-nacimiento').value=a.nacimiento||'';
+  document.getElementById('add-peso').value=a.peso||'';
+  populatePotreroSelect('add-potrero');
+  document.getElementById('add-potrero').value=a.potrero||'';
+  document.getElementById('add-estado').value=a.estado||'Activo';
+  document.getElementById('add-proposito').value=a.proposito||'Carne';
+  document.getElementById('add-madre').value=a.madre||'';
+  document.getElementById('add-obs').value=a.obs||'';
+  document.getElementById('modal-animal-title').textContent='Editar — '+a.nombre;
+  openModal('animal');
+}
+
+async function eliminarAnimal(id){
+  if(!confirm('¿Eliminar este animal?'))return;
+  await dbDelete('animales',id);
+  animales=await dbGetAll('animales');
+  renderInventario();
+  toast('Animal eliminado','rojo');
+}
+
+// ═══════════════════════════════════════════
+//  PESOS
+// ═══════════════════════════════════════════
+function renderPesos(){
+  populateAnimalSelect('peso-animal');
+  document.getElementById('peso-fecha').value=hoy();
+  const lista=[...pesadas].reverse().slice(0,30);
+  document.getElementById('pesos-list').innerHTML=lista.length
+    ?lista.map(p=>{
+      const a=getAnimal(p.animalId);
+      const prev=pesadas.filter(x=>x.animalId===p.animalId&&x.fecha<p.fecha).slice(-1)[0];
+      const delta=prev?p.peso-prev.peso:0;
+      return`<div class="fin-row">
+        <div><div style="font-weight:600;font-size:13px">${a?a.nombre+' ('+a.arete+')':'—'}</div><div style="font-size:11px;color:var(--texto-muted)">${p.fecha}${p.obs?' · '+p.obs:''}</div></div>
+        <div style="text-align:right"><div style="font-weight:700;font-size:15px">${p.peso}kg</div>${delta?`<div style="font-size:11px;color:var(--${delta>0?'verde':'rojo'})">${delta>0?'+':''}${delta}kg</div>`:''}
+        </div></div>`;}).join('')
+    :'<div class="empty" style="padding:20px 0;"><p>Sin pesadas registradas</p></div>';
+}
+
+async function registrarPeso(){
+  const anId=parseInt(document.getElementById('peso-animal').value);
+  const kg=parseFloat(document.getElementById('peso-kg').value);
+  const fecha=document.getElementById('peso-fecha').value;
+  const obs=document.getElementById('peso-obs').value;
+  if(!anId||!kg||!fecha){toast('Completa animal, peso y fecha','amarillo');return;}
+  await dbPut('pesadas',{animalId:anId,peso:kg,fecha,obs});
+  // Actualizar peso del animal
+  const a=getAnimal(anId);
+  if(a){a.peso=kg;await dbPut('animales',a);}
+  pesadas=await dbGetAll('pesadas');
+  animales=await dbGetAll('animales');
+  document.getElementById('peso-kg').value='';
+  document.getElementById('peso-obs').value='';
+  renderPesos();
+  toast('Peso registrado: '+kg+'kg');
+}
+
+// ═══════════════════════════════════════════
+//  SALUD
+// ═══════════════════════════════════════════
+function renderSalud(){
+  populateAnimalSelect('salud-animal');
+  document.getElementById('salud-fecha').value=hoy();
+  const ahora=new Date();
+  // Próximas
+  const prox=eventos.filter(e=>e.proxima).map(e=>{
+    const d=new Date(e.proxima),dias=Math.round((d-ahora)/86400000);
+    return{...e,dias};
+  }).filter(e=>e.dias>=0).sort((a,b)=>a.dias-b.dias);
+  document.getElementById('proximas-apps').innerHTML=prox.length
+    ?prox.slice(0,6).map(e=>{
+      const a=getAnimal(e.animalId);
+      const col=e.dias<=3?'rojo':e.dias<=10?'amarillo':'verde';
+      return`<div class="alert-item"><div class="alert-dot ${col}"></div>
+        <div style="flex:1"><div class="alert-name">${a?a.nombre:'-'} — ${e.tipo}</div>
+        <div class="alert-desc">${e.producto} · ${e.dias===0?'Hoy':e.dias+'d'}</div></div>
+        <span class="badge badge-${col}">${e.proxima}</span></div>`;}).join('')
+    :'<div class="empty" style="padding:16px 0"><p>Sin aplicaciones próximas</p></div>';
+  // Historial
+  const tipos={Vacunación:'verde',Desparasitación:'azul',Tratamiento:'rojo',Revisión:'cafe'};
+  document.getElementById('salud-list').innerHTML=[...eventos].reverse().slice(0,20).map(e=>{
+    const a=getAnimal(e.animalId);
+    return`<div class="fin-row">
+      <div><div style="font-weight:600;font-size:13px">${a?a.nombre:'—'} <span class="badge badge-${tipos[e.tipo]||'gris'}" style="margin-left:4px">${e.tipo}</span></div>
+      <div style="font-size:11px;color:var(--texto-muted)">${e.fecha} · ${e.producto} ${e.dosis?'· '+e.dosis:''}</div></div>
+      <div style="font-size:11px;text-align:right;color:var(--texto-muted)">${e.proxima?'→ '+e.proxima:''}</div>
+    </div>`}).join('')||'<div class="empty" style="padding:20px 0"><p>Sin registros</p></div>';
+}
+
+async function registrarSalud(){
+  const anId=parseInt(document.getElementById('salud-animal').value);
+  const producto=document.getElementById('salud-producto').value.trim();
+  if(!anId||!producto){toast('Selecciona animal y producto','amarillo');return;}
+  await dbPut('eventos',{
+    animalId:anId,
+    tipo:document.getElementById('salud-tipo').value,
+    fecha:document.getElementById('salud-fecha').value,
+    producto,
+    dosis:document.getElementById('salud-dosis').value,
+    proxima:document.getElementById('salud-proxima').value,
+    vet:document.getElementById('salud-vet').value,
+  });
+  eventos=await dbGetAll('eventos');
+  ['salud-producto','salud-dosis','salud-proxima','salud-vet'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  renderSalud();
+  toast('Evento sanitario registrado');
+}
+
+// ═══════════════════════════════════════════
+//  PASTOS
+// ═══════════════════════════════════════════
+function renderPastos(){
+  const labels={activo:'En uso',descanso:'Descanso',agotado:'Agotado'};
+  document.getElementById('potrero-grid').innerHTML=potreros.length
+    ?potreros.map(p=>{
+      const barCol=p.pasto>=60?'verde':p.pasto>=30?'amarillo':'rojo';
+      const animEnPot=animales.filter(a=>a.potrero===p.nombre).length;
+      return`<div class="potrero-card ${p.estado}" onclick="togglePotrero(${p.id})">
+        <div style="font-weight:700;font-size:14px;margin-bottom:2px">${p.nombre}</div>
+        <div style="font-size:11px;color:var(--texto-muted);margin-bottom:6px">${p.ha}ha · ${p.forraje||'—'}</div>
+        <div class="barra"><div class="barra-fill ${barCol}" style="width:${p.pasto||0}%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--texto-muted)">
+          <span>${p.pasto||0}% pasto</span><span>${animEnPot}/${p.cap||0}</span>
+        </div>
+        <span class="badge badge-${p.estado==='activo'?'verde':p.estado==='descanso'?'amarillo':'rojo'}" style="margin-top:8px">${labels[p.estado]}</span>
+      </div>`}).join('')
+    :'<div class="empty" style="grid-column:1/-1"><i class="ti ti-trees"></i><p>Sin potreros registrados</p></div>';
+  // Rotación
+  const ahora=new Date();
+  document.getElementById('rotacion-list').innerHTML=potreros.map(p=>{
+    const entrada=new Date(p.entrada||hoy());
+    const diasUso=Math.round((ahora-entrada)/86400000);
+    const disponible=diasUso>=(config.diasRot||28)||p.estado!=='activo';
+    return`<div class="fin-row">
+      <div><div style="font-weight:600;font-size:13px">${p.nombre}</div>
+      <div style="font-size:11px;color:var(--texto-muted)">${diasUso}d en uso · entrada: ${p.entrada||'—'}</div></div>
+      <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        ${disponible?'<span class="badge badge-verde">Disponible</span>':'<span class="badge badge-amarillo">Recuperando</span>'}
+        <button class="btn btn-outline btn-sm" onclick="rotar(${p.id})"><i class="ti ti-refresh"></i></button>
+      </div></div>`;}).join('');
+}
+
+async function rotar(id){
+  const p=potreros.find(x=>x.id===id);if(!p)return;
+  p.entrada=hoy();
+  p.estado=p.estado==='activo'?'descanso':'activo';
+  await dbPut('potreros',p);
+  potreros=await dbGetAll('potreros');
+  renderPastos();
+  toast('Rotación registrada: '+p.nombre);
+}
+
+async function togglePotrero(id){
+  // Solo visual, no hace nada especial — la edición se puede extender
+}
+
+async function guardarPotrero(){
+  const nombre=document.getElementById('pot-nombre').value.trim();
+  if(!nombre){toast('El nombre es obligatorio','amarillo');return;}
+  await dbPut('potreros',{
+    nombre,
+    ha:parseFloat(document.getElementById('pot-ha').value)||0,
+    forraje:document.getElementById('pot-forraje').value,
+    cap:parseInt(document.getElementById('pot-cap').value)||10,
+    estado:document.getElementById('pot-estado').value,
+    pasto:parseInt(document.getElementById('pot-pasto').value)||50,
+    entrada:hoy(),
+  });
+  potreros=await dbGetAll('potreros');
+  closeModal('potrero');
+  ['pot-nombre','pot-ha','pot-forraje','pot-cap','pot-pasto'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  renderPastos();
+  toast('Potrero "'+nombre+'" creado');
+}
+
+// ═══════════════════════════════════════════
+//  FINANZAS
+// ═══════════════════════════════════════════
+function renderFinanzas(){
+  document.getElementById('fin-fecha').value=hoy();
+  const ingresos=finanzas.filter(f=>f.tipo==='ingreso').reduce((s,f)=>s+f.valor,0);
+  const egresos=finanzas.filter(f=>f.tipo==='egreso').reduce((s,f)=>s+f.valor,0);
+  document.getElementById('fin-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-icon verde"><i class="ti ti-trending-up"></i></div><div class="stat-val" style="font-size:18px">$${fmt(ingresos)}</div><div class="stat-label">Ingresos</div></div>
+    <div class="stat-card"><div class="stat-icon rojo"><i class="ti ti-trending-down"></i></div><div class="stat-val" style="font-size:18px">$${fmt(egresos)}</div><div class="stat-label">Egresos</div></div>
+    <div class="stat-card"><div class="stat-icon ${ingresos-egresos>=0?'verde':'rojo'}"><i class="ti ti-coin"></i></div><div class="stat-val" style="font-size:18px;color:var(--${ingresos-egresos>=0?'verde':'rojo'})">$${fmt(Math.abs(ingresos-egresos))}</div><div class="stat-label">Utilidad</div></div>
+  `;
+  document.getElementById('fin-list').innerHTML=[...finanzas].reverse().slice(0,30).map(f=>`
+    <div class="fin-row">
+      <div><div style="font-weight:600;font-size:13px">${f.cat}</div><div style="font-size:11px;color:var(--texto-muted)">${f.fecha}${f.desc?' · '+f.desc:''}</div></div>
+      <span class="fin-val ${f.tipo==='ingreso'?'verde':'rojo'}">${f.tipo==='ingreso'?'+':'-'}$${fmt(f.valor)}</span>
+    </div>`).join('')||'<div class="empty" style="padding:20px 0"><p>Sin movimientos</p></div>';
+}
+
+async function registrarFinanza(){
+  const valor=parseFloat(document.getElementById('fin-valor').value);
+  if(!valor){toast('Ingresa un valor válido','amarillo');return;}
+  await dbPut('finanzas',{
+    fecha:document.getElementById('fin-fecha').value,
+    tipo:document.getElementById('fin-tipo').value,
+    cat:document.getElementById('fin-cat').value,
+    desc:document.getElementById('fin-desc').value,
+    valor,
+  });
+  finanzas=await dbGetAll('finanzas');
+  document.getElementById('fin-valor').value='';
+  document.getElementById('fin-desc').value='';
+  renderFinanzas();
+  toast('Movimiento registrado');
+}
+
+// ═══════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════
+function renderConfig(){
+  document.getElementById('cfg-finca').value=config.finca||'';
+  document.getElementById('cfg-propietario').value=config.propietario||'';
+  document.getElementById('cfg-municipio').value=config.municipio||'';
+  document.getElementById('cfg-hectareas').value=config.hectareas||'';
+  document.getElementById('cfg-peso-min').value=config.pesoMin||280;
+  document.getElementById('cfg-dias-vac').value=config.diasVac||7;
+  document.getElementById('cfg-dias-rot').value=config.diasRot||28;
+}
+
+async function guardarConfig(){
+  config={
+    id:1,
+    finca:document.getElementById('cfg-finca').value,
+    propietario:document.getElementById('cfg-propietario').value,
+    municipio:document.getElementById('cfg-municipio').value,
+    hectareas:document.getElementById('cfg-hectareas').value,
+    pesoMin:parseInt(document.getElementById('cfg-peso-min').value)||280,
+    diasVac:parseInt(document.getElementById('cfg-dias-vac').value)||7,
+    diasRot:parseInt(document.getElementById('cfg-dias-rot').value)||28,
+  };
+  await dbPut('config',config);
+  toast('Configuración guardada ✓');
+}
+
+// ═══════════════════════════════════════════
+//  BACKUP
+// ═══════════════════════════════════════════
+async function exportarBackup(){
+  const data={animales,pesadas,eventos,potreros,finanzas,config,exportado:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='ganadera_backup_'+hoy()+'.json';
+  a.click();
+  toast('Backup exportado');
+}
+
+async function importarBackup(e){
+  const file=e.target.files[0];if(!file)return;
+  const text=await file.text();
+  try{
+    const data=JSON.parse(text);
+    if(confirm('¿Importar backup? Esto reemplazará todos los datos actuales.')){
+      for(const store of ['animales','pesadas','eventos','potreros','finanzas','config']){
+        await dbClear(store);
+        if(data[store]) for(const item of (Array.isArray(data[store])?data[store]:[data[store]])) await dbPut(store,item);
+      }
+      await cargarDatos();
+      renderDashboard();
+      toast('Backup importado correctamente');
+    }
+  }catch{toast('Archivo inválido','rojo');}
+  e.target.value='';
+}
+
+function exportarCSV(){
+  const rows=[['Arete','Nombre','Raza','Sexo','Nacimiento','Peso','Potrero','Estado'],...animales.map(a=>[a.arete,a.nombre,a.raza,a.sexo,a.nacimiento,a.peso,a.potrero,a.estado])];
+  const csv='\uFEFF'+rows.map(r=>r.join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='inventario_'+hoy()+'.csv';a.click();
+  toast('CSV exportado');
+}
+
+// ═══════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════
+function populateAnimalSelect(id){
+  const sel=document.getElementById(id);if(!sel)return;
+  sel.innerHTML='<option value="">-- Seleccione animal --</option>'+animales.map(a=>`<option value="${a.id}">${a.arete} — ${a.nombre}</option>`).join('');
+}
+function populatePotreroSelect(id){
+  const sel=document.getElementById(id);if(!sel)return;
+  sel.innerHTML=potreros.length
+    ?potreros.map(p=>`<option value="${p.nombre}">${p.nombre}</option>`).join('')
+    :'<option value="">Sin potreros creados</option>';
+}
+
+// ═══════════════════════════════════════════
+//  PWA INSTALL
+// ═══════════════════════════════════════════
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  installPrompt=e;
+  renderDashboard();
+});
+
+async function instalarApp(){
+  if(!installPrompt)return;
+  installPrompt.prompt();
+  const{outcome}=await installPrompt.userChoice;
+  if(outcome==='accepted'){installPrompt=null;toast('¡App instalada!');}
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+async function init(){
+  await initDB();
+  await cargarDatos();
+  renderDashboard();
+  // Service Worker
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  }
+}
+
+init();
+</script>
+</body>
+</html>
