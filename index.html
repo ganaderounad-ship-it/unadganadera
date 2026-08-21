@@ -856,8 +856,11 @@ function renderPastos(){
     ?potreros.map(p=>{
       const barCol=p.pasto>=60?'verde':p.pasto>=30?'amarillo':'rojo';
       const animEnPot=animales.filter(a=>a.potrero===p.nombre).length;
-      return`<div class="potrero-card ${p.estado}" onclick="togglePotrero(${p.id})">
-        <div style="font-weight:700;font-size:14px;margin-bottom:2px">${p.nombre}</div>
+      return`<div class="potrero-card ${p.estado}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px">
+          <div style="font-weight:700;font-size:14px">${p.nombre}</div>
+          <button onclick="eliminarPotrero(${p.id})" style="background:none;border:none;cursor:pointer;color:var(--rojo);font-size:16px;padding:0;line-height:1" title="Eliminar potrero"><i class="ti ti-trash"></i></button>
+        </div>
         <div style="font-size:11px;color:var(--texto-muted);margin-bottom:6px">${p.ha}ha · ${p.forraje||'—'}</div>
         <div class="barra"><div class="barra-fill ${barCol}" style="width:${p.pasto||0}%"></div></div>
         <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--texto-muted)">
@@ -877,7 +880,10 @@ function renderPastos(){
       <div style="font-size:11px;color:var(--texto-muted)">${diasUso}d en uso · entrada: ${p.entrada||'—'}</div></div>
       <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
         ${disponible?'<span class="badge badge-verde">Disponible</span>':'<span class="badge badge-amarillo">Recuperando</span>'}
-        <button class="btn btn-outline btn-sm" onclick="rotar(${p.id})"><i class="ti ti-refresh"></i></button>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm" onclick="rotar(${p.id})" title="Rotar"><i class="ti ti-refresh"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarPotrero(${p.id})" title="Eliminar"><i class="ti ti-trash"></i></button>
+        </div>
       </div></div>`;}).join('');
 }
 
@@ -891,8 +897,19 @@ async function rotar(id){
   toast('Rotación registrada: '+p.nombre);
 }
 
-async function togglePotrero(id){
-  // Solo visual, no hace nada especial — la edición se puede extender
+async function eliminarPotrero(id){
+  const p=potreros.find(x=>x.id===id);
+  if(!p)return;
+  const animEnPot=animales.filter(a=>a.potrero===p.nombre).length;
+  if(animEnPot>0){
+    toast('No se puede eliminar: hay '+animEnPot+' animal(es) en este potrero','amarillo');
+    return;
+  }
+  if(!confirm('¿Eliminar el potrero "'+p.nombre+'"? Esta acción no se puede deshacer.'))return;
+  await dbDelete('potreros',id);
+  potreros=await dbGetAll('potreros');
+  renderPastos();
+  toast('Potrero eliminado','rojo');
 }
 
 async function guardarPotrero(){
