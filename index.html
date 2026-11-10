@@ -181,6 +181,8 @@ body{font-family:'Sora',sans-serif;background:#f0f4f2;color:var(--texto);display
   .form-row{grid-template-columns:1fr 1fr;}
 }
 </style>
+<script data-goatcounter="https://ganaderia.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
@@ -1051,6 +1053,15 @@ function populatePotreroSelect(id){
 // ═══════════════════════════════════════════
 //  PWA INSTALL
 // ═══════════════════════════════════════════
+window.addEventListener('appinstalled',()=>{
+  try{
+    const enviar=()=>window.goatcounter&&window.goatcounter.count
+      ?window.goatcounter.count({path:'app-instalada',title:'App instalada',event:true})
+      :setTimeout(enviar,1000);
+    enviar();
+  }catch(e){}
+});
+
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();
   installPrompt=e;
